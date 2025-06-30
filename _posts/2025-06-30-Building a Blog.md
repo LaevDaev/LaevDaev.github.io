@@ -1,6 +1,6 @@
 ---
 layout: blog
 title: Blog
-category: "{{ site.params.category | default: '' }}"
+category: "DevBlog"
 ---
 Today is the day I will have setup a Blog
