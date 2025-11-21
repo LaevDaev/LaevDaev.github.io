@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coin Flip Simulator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        .controls {
+            margin: 20px 0;
+        }
+        .toggle-switch {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.4s;
+            border-radius: 24px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: #667eea;
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        button {
+            padding: 12px 30px;
+            font-size: 16px;
+            background-color: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #764ba2;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 20px;
+            color: #333;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Coin Flip Simulator</h1>
+        <div class="toggle-switch">
+            <label for="redoToggle">Redo on Tails:</label>
+            <label class="switch">
+                <input type="checkbox" id="redoToggle">
+                <span class="slider"></span>
+            </label>
+        </div>
+        <div class="controls">
+            <button id="flipBtn">Flip Coin</button>
+        </div>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function flips(redo) {
+            let counter = 0;
+            let done = false;
+            
+            while (!done) {
+                if (Math.random() < 0.5) {
+                    counter++;
+                } else {
+                    if (redo) {
+                        if (Math.random() < 0.5) {
+                            counter++;
+                        } else {
+                            done = true;
+                        }
+                    } else {
+                        done = true;
+                    }
+                }
+            }
+            
+            return counter;
+        }
+
+        document.getElementById('flipBtn').addEventListener('click', function() {
+            const redo = document.getElementById('redoToggle').checked;
+            const result = flips(redo);
+            document.getElementById('result').textContent = `Number of heads flipped: ${result}`;
+            this.textContent = `Number of heads flipped: ${result}`;
+        });
+    </script>
+</body>
+</html>
