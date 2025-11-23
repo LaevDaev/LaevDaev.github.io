@@ -94,7 +94,7 @@
         }
     </style>
 </head>
-<body>
+<body style="display:flex; flex-direction:column; align-items:center; justify-content:flex-start; min-height:100vh; margin:0;"></body>
     <div class="container">
         <h1>Coin Flip Simulator</h1>
         <div class="toggle-switch">
@@ -133,15 +133,17 @@
                     }
                 }
             }
-            probability = counter ** 0.75;
+            // compute probability and round to two decimal places
+            const value = (0.75 ** counter) * 100;
+            probability = Math.round(value * 100) / 100;
             return [counter, losses_prevented, probability];
         }
 
         document.getElementById('flipBtn').addEventListener('click', function() {
             const redo = document.getElementById('redoToggle').checked;
             result = flips(redo);
-            document.getElementById('result').textContent = `flip`;
-            this.textContent = `Number of heads flipped: ${result[0]}`;
+            document.getElementById('result').textContent = `Number of heads flipped: ${result[0]}flip`;
+            this.textContent = `flip`;
             const tbody = document.getElementById('flipTableBody');
             const row = document.createElement('tr');
 
@@ -165,17 +167,15 @@
         const table = document.querySelector('table');
         if (!container || !table) return;
 
-        // Keep the table in the DOM but make its top edge always at the vertical center of the viewport.
-        // Position the table fixed so it's relative to the viewport, center horizontally.
-        table.style.position = 'fixed';
-        table.style.top = '50%';               // top edge at viewport vertical center
-        table.style.left = '50%';              // center horizontally
-        table.style.transform = 'translateX(-50%)'; // shift left to truly center horizontally; keep top at center
+        // Let the document grow naturally downward so it can be scrolled.
+        table.style.position = 'relative';
+        table.style.margin = '24px auto';
         table.style.width = '80%';
-        table.style.maxWidth = '900px';
+        table.style.maxWidth = '1500px';
         table.style.borderCollapse = 'collapse';
         table.style.zIndex = '10';
-        // Add some spacing from surrounding content so container doesn't overlap badly on small screens
+
+        // Ensure container stays above table visually
         container.style.zIndex = '20';
 
         // Simple table styling to match the page
