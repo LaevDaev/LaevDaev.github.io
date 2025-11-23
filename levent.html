@@ -115,7 +115,7 @@
             let counter = 0;
             let losses_prevented = 0;
             let done = false;
-            
+            let probability = 1;
             while (!done) {
                 if (Math.random() < 0.5) {
                     counter++;
@@ -133,8 +133,8 @@
                     }
                 }
             }
-            
-            return [counter, losses_prevented];
+            probability = counter ** 0.75;
+            return [counter, losses_prevented, probability];
         }
 
         document.getElementById('flipBtn').addEventListener('click', function() {
@@ -149,10 +149,12 @@
             const c1 = document.createElement('td'); c1.textContent = flipNo;
             const c2 = document.createElement('td'); c2.textContent = result[0];
             const c3 = document.createElement('td'); c3.textContent = result[1];
+            const c4 = document.createElement('td'); c4.textContent = result[2];
 
             row.appendChild(c1);
             row.appendChild(c2);
             row.appendChild(c3);
+            row.appendChild(c4);
             tbody.appendChild(row);
 
         });
@@ -163,13 +165,18 @@
         const table = document.querySelector('table');
         if (!container || !table) return;
 
-        // Move the existing table into the container so it appears beneath the button/result
-        container.appendChild(table);
-
-        // Basic spacing and layout tweaks
-        table.style.marginTop = '20px';
-        table.style.width = '100%';
+        // Keep the table in the DOM but make its top edge always at the vertical center of the viewport.
+        // Position the table fixed so it's relative to the viewport, center horizontally.
+        table.style.position = 'fixed';
+        table.style.top = '50%';               // top edge at viewport vertical center
+        table.style.left = '50%';              // center horizontally
+        table.style.transform = 'translateX(-50%)'; // shift left to truly center horizontally; keep top at center
+        table.style.width = '80%';
+        table.style.maxWidth = '900px';
         table.style.borderCollapse = 'collapse';
+        table.style.zIndex = '10';
+        // Add some spacing from surrounding content so container doesn't overlap badly on small screens
+        container.style.zIndex = '20';
 
         // Simple table styling to match the page
         table.querySelectorAll('th, td').forEach(cell => {
@@ -186,6 +193,7 @@
             <th>#flip</th>
             <th>heads in a row</th>
             <th>amount of losses prevented</th>
+            <th>probability</th>
         </tr>
     </thead>
     <tbody id="flipTableBody">
