@@ -113,6 +113,7 @@
     <script>
         function flips(redo) {
             let counter = 0;
+            let losses_prevented = 0;
             let done = false;
             
             while (!done) {
@@ -122,6 +123,8 @@
                     if (redo) {
                         if (Math.random() < 0.5) {
                             counter++;
+                            losses_prevented++;
+
                         } else {
                             done = true;
                         }
@@ -131,15 +134,41 @@
                 }
             }
             
-            return counter;
+            return (counter, losses_prevented);
         }
 
         document.getElementById('flipBtn').addEventListener('click', function() {
             const redo = document.getElementById('redoToggle').checked;
             const result = flips(redo);
-            document.getElementById('result').textContent = `Number of heads flipped: ${result}`;
-            this.textContent = `Number of heads flipped: ${result}`;
+            document.getElementById('result').textContent = `flip`;
+            this.textContent = `Number of heads flipped: ${result[0]}`;
+            const tbody = document.getElementById('flipTableBody');
+            const row = document.createElement('tr');
+
+            const flipNo = tbody.rows.length + 1;
+            const c1 = document.createElement('td'); c1.textContent = flipNo;
+            const c2 = document.createElement('td'); c2.textContent = result[0];
+            const c3 = document.createElement('td'); c3.textContent = result[1];
+
+            row.appendChild(c1);
+            row.appendChild(c2);
+            row.appendChild(c3);
+            tbody.appendChild(row);
+
         });
     </script>
+
+<table>
+    <thead>
+        <tr>
+            <th>#flip</th>
+            <th>heads in a row</th>
+            <th>amount of losses prevented</th>
+        </tr>
+    </thead>
+    <tbody id="flipTableBody">
+        <!-- rows will be appended here -->
+    </tbody>
+</table>
 </body>
 </html>
