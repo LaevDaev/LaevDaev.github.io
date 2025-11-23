@@ -139,7 +139,7 @@
 
         document.getElementById('flipBtn').addEventListener('click', function() {
             const redo = document.getElementById('redoToggle').checked;
-            const result = flips(redo);
+            result = flips(redo);
             document.getElementById('result').textContent = `flip`;
             this.textContent = `Number of heads flipped: ${result[0]}`;
             const tbody = document.getElementById('flipTableBody');
