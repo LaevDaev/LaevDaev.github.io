@@ -134,7 +134,7 @@
                 }
             }
             
-            return (counter, losses_prevented);
+            return counter, losses_prevented;
         }
 
         document.getElementById('flipBtn').addEventListener('click', function() {
@@ -157,7 +157,29 @@
 
         });
     </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const container = document.querySelector('.container');
+        const table = document.querySelector('table');
+        if (!container || !table) return;
 
+        // Move the existing table into the container so it appears beneath the button/result
+        container.appendChild(table);
+
+        // Basic spacing and layout tweaks
+        table.style.marginTop = '20px';
+        table.style.width = '100%';
+        table.style.borderCollapse = 'collapse';
+
+        // Simple table styling to match the page
+        table.querySelectorAll('th, td').forEach(cell => {
+            cell.style.padding = '8px 12px';
+            cell.style.border = '1px solid #e9e9e9';
+            cell.style.textAlign = 'center';
+        });
+        table.querySelectorAll('th').forEach(th => th.style.background = '#fafafa');
+    });
+    </script>
 <table>
     <thead>
         <tr>
