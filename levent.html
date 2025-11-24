@@ -242,6 +242,28 @@
             row.appendChild(c3);
             row.appendChild(c4);
             tbody.prepend(row);
+            // default color mapping (can be overridden elsewhere)
+            function color_table_row(result) {
+                // result = [counter, losses_prevented, probability]
+                const p = Math.max(0, Math.min(100, Number(result[2]) || 0));
+                const r = Math.round(255 * (1 - p / 100));
+                const g = Math.round(255 * (p / 100));
+                const b = 40;
+                return `rgb(${r}, ${g}, ${b})`;
+            }
+
+            const bg = color_table_row(result);
+            row.style.backgroundColor = bg;
+
+            // ensure readable text color
+            function contrastColorFromRGBString(rgbStr) {
+                const m = rgbStr.match(/(\d+)[^\d]+(\d+)[^\d]+(\d+)/);
+                if (!m) return '#000';
+                const r = +m[1], g = +m[2], b = +m[3];
+                const yiq = (r * 299 + g * 587 + b * 114) / 1000;
+                return yiq >= 128 ? '#111' : '#fff';
+            }
+            row.style.color = contrastColorFromRGBString(bg);
 
         });
     </script>
