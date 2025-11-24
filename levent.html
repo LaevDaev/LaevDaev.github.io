@@ -198,9 +198,28 @@
                 }
             }
             // compute probability and round to two decimal places
-            const value = (0.75 ** counter) * 100;
-            probability = Math.round(value * 100) / 100;
-            if(counter == 0) {probability = 0.25;}
+            
+            if(losses_prevented) {
+                
+                if(counter == 0) {
+                    
+                    probability = 25;
+                }
+                else {
+                    const value = (0.75 ** counter) * 100;
+                    probability = Math.round(value * 100) / 100;
+                }
+            }
+            else {
+                if(counter == 0) {
+                    
+                    probability = 50;
+                }
+                else {
+                    const value = (0.5 ** counter) * 100;
+                    probability = Math.round(value * 100) / 100;
+                }
+            }
             return [counter, losses_prevented, probability];
         }
 
@@ -216,7 +235,7 @@
             const c1 = document.createElement('td'); c1.textContent = flipNo;
             const c2 = document.createElement('td'); c2.textContent = result[0];
             const c3 = document.createElement('td'); c3.textContent = result[1];
-            const c4 = document.createElement('td'); c4.textContent = result[2];
+            const c4 = document.createElement('td'); c4.textContent = result[2] + "%";
 
             row.appendChild(c1);
             row.appendChild(c2);
